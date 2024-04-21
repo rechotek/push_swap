@@ -1,24 +1,33 @@
-#include <stdio.h>
+#include "push_swap.h"
 
-int error_syntax(char *str)
+void matrix_free (char *argv[])
 {
-	if (!(*str == '+' || *str == '-' || (*str >= '0' && *str <= '9')))
-		return (1); // sprawdza czy jakis znak jest inny od '-' '+' lub cyfry
-	if ((*str == '+' || *str == '-') && !(str[1] >= '0' && str[1] <= '9'))
-		return (1); // sprawdza czy po '+' lub '-' jest cyfra
-	str++;
-	while (*str) // petla dziala dopoki wartosc na ktora wskazuje str po inkrementacji nie jest 0
-	{
-		if (!(*str >= '0' && *str <= '9'))
-			return (1);
-		str++;
-	}
-	return (0);
+	int x;
+
+	x = -1;
+	if (argv == NULL || *argv == NULL)
+		return ;
+	while (argv[x])
+		free(argv[x++]);
+	free(argv - 1);
 }
 
-int main (void)
+void error_free(t_stack **a, char *argv[], bool flag_argc_2)
 {
-	char str[] = "+1337";
-	printf ("%d\n", error_syntax(str));
-	return (0);
+	if (flag_argc_2)
+		matrix_free(argv);
+	write (2, "Error\n", 6);
+	exit(1);
+}
+
+int main() {
+    // Inicjalizacja zmiennych dla przykładu
+    char *argv[] = {"\0", "argument1", "argument2", NULL}; // przykładowa tablica argumentów
+    t_stack *a = NULL; // przykładowy stos
+    bool flag_argc_2 = 1; // przykładowa flaga
+
+    // Wywołanie funkcji error_free z przykładowymi argumentami
+    error_free(&a, argv, flag_argc_2);
+
+    return 0;
 }

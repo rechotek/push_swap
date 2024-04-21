@@ -6,7 +6,7 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:34:26 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/04/21 17:55:10 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:35:32 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,17 @@
 // do programu. A jak jest argc == 2, to uzywam ft_split, czyli
 // zawsze jak jest argc == 2, to tworze nowa tabele w ft_split.
 
-// nie do konca rozumiem w jaki sposob dziala ta funkcja, a juz zupelnie nie wiem dlaczego x = -1
+// wytlumaczenie x = -1: w main.c inicjuje stack_init(&a, argv + 1, argc == 2)
+// &a - to adres stosu
+// argv + 1 - przesuwa mnie od razu na pozycje gdzie jest pierwsza liczba
+// z pominieciem nazwy programu (przy argv) lub '\0' w przypadku splita
+// (ktory jest defacto sztucznym argv)
+// argc == 2 - ustawia warunek dla flagi, ktora sprawdza prawdziwosc tego stwierdzenia
+//
+// i teraz w funkcji stack_init, *argv[] to pointer i wskazuje mi na drugie miejsce
+// w tablicy (ktora stworzyl ft_split) i oznacza je jako 0, chociaz tak naprawde jest to pozycja 1.
+// Dlatego jak zwalniam pamiec w matrix_free x musi byc x = -1. Bo miejsce, ktore bylo na pozycji 0 po
+// wykonaniu splita, teraz jest na pozycji -1. Bardzo to zawile, ale dziala to mniej wiecej tak.
 
 void matrix_free (char *argv[])
 {
@@ -30,7 +40,7 @@ void matrix_free (char *argv[])
 		return ;
 	while (argv[x])
 		free(argv[x++]);
-	free(argv - 1);
+	free(argv - 1); // argv wskazuje na pierwszy element tablicy, a nie na sama tablice. dlatego tu jest -1 (nie wiem czy to ma sens?)
 }
 
 // Uwalniam pamiec w stosie a. Jezeli stack jest NULL to zwracam 0.
