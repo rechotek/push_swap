@@ -6,7 +6,7 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:34:46 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/04/21 17:44:15 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:45:00 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_stack *find_last_node(t_stack *head)
 }
 
 // append_node dodaje liczbe do stosu, czyli tworzy nowy node i nadaje mu wartosc
-// dla kazdego nowego node, next = NULL, poniewaz po nim nie ma nic jeszcze
+// dla kazdego nowego node, next = NULL, poniewaz po nim nie ma jeszcze nic
 // a previous = last_node, czyli ten, ktory ostatnio probowalem "wgrac"
 // jesli to jest pierwszy node to przechowuje wskaznik na stos a
 

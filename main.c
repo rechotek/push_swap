@@ -6,11 +6,46 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:53:25 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/04/21 13:32:59 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:00:37 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+// obliczam dlugosc stosu. iteruje dopoki stos istnieje
+// przy kazdej petli zmieniam pozycje stack na stack->next
+
+int stack_len(t_stack *stack)
+{
+	int x;
+
+	if (stack == NULL)
+		return (0);
+	x = 0;
+	while (stack)
+	{
+		x++;
+		stack = stack->next;
+	}
+	return (x);
+}
+
+// sprawdzam czy stos jest posortowany
+// biore wartosc node i sprawdzam czy jest wieksza od nastepnego node
+// jesli jest wieksza to blad, czyli stos nieposortowany
+
+bool stack_sorted(t_stack *stack)
+{
+	if (stack == NULL)
+		return (1);
+	while (stack->next)
+	{
+		if (stack->value > stack->next)
+			return (false)
+		stack = stack->next;
+	}
+	return (true);
+}
 
 // else if (argc == 2)
 // oprocz nazwy mamy tylko jeden argument, ale ten argument moze miec taka
@@ -33,4 +68,13 @@ int main (int argc, char *argv[])
 	else if (argc == 2) // oprocz nazwy mamy tylko jeden argument, ale ten argument moze miec taka forme "3 5 42 -1337"
 		argv = ft_split(argv[1], ' '); // tutaj nazywamy tabele liczb, ktora utworzymy za pomoca splita argv, poniewaz linie nizej inicjuje stos i uzywam argv + 1, poniewaz chce od razu dostac sie do liczby - bedzie to dzialo zarowno dla liczb utworzonych w tabeli splitem, jak i dla danych wprowadzonych do programu w wielu stringach
 	stack_init(&a, argv + 1, argc == 2); // argv+1, aby zaczac od miejsca gdzie juz powinna znajdowac sie pierwsza liczba
+	if (!stack_sorted(a))
+	{
+		if (stack_len(a) == 2)
+			sa(&a, false); // to zrozumiec
+		else if (stack_len(a) == 3)
+			sort_three(&a);
+		else
+			push_swap(&a, &b);
+	}
 }

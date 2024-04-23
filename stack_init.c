@@ -6,7 +6,7 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:20:57 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/04/21 17:55:35 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:02:27 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,16 @@ void stack_init(t_stack **a, char *argv[], bool flag_argc_2)
 		matrix_free(argv);
 }
 
-int main (void)
-{
-	t_stack *a;
-	a = NULL;
+// int main (void)
+// {
+// 	t_stack *a;
+// 	a = NULL;
 
-	char *v[5] = {v[0] = "\0", v[1] = "42", v[2] = "1337", v[3] = "-21", v[4] = NULL};
-	stack_init(&a, v+1, false);
-	while (a)
-	{
-		printf("\n%d, \t node with address %p\n", a->value, a);
-		a = a->next;
-	}
-}
+// 	char *v[5] = {v[0] = "\0", v[1] = "42", v[2] = "1337", v[3] = "-21", v[4] = NULL};
+// 	stack_init(&a, v+1, false);
+// 	while (a)
+// 	{
+// 		printf("\n%d, \t node with address %p\n", a->value, a);
+// 		a = a->next;
+// 	}
+// }

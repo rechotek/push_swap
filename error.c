@@ -6,7 +6,7 @@
 /*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:34:26 by mrechuli          #+#    #+#             */
-/*   Updated: 2024/04/21 19:35:32 by mrechuli         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:45:05 by mrechuli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 //
 // i teraz w funkcji stack_init, *argv[] to pointer i wskazuje mi na drugie miejsce
 // w tablicy (ktora stworzyl ft_split) i oznacza je jako 0, chociaz tak naprawde jest to pozycja 1.
-// Dlatego jak zwalniam pamiec w matrix_free x musi byc x = -1. Bo miejsce, ktore bylo na pozycji 0 po
+// Dlatego jak zwalniam pamiec w matrix_free, x musi byc x = -1. Bo miejsce, ktore bylo na pozycji 0 po
 // wykonaniu splita, teraz jest na pozycji -1. Bardzo to zawile, ale dziala to mniej wiecej tak.
 
 void matrix_free (char *argv[])
@@ -47,7 +47,7 @@ void matrix_free (char *argv[])
 // W innym przypadku do zmiennej current przypisuje wskaznik na stos a.
 // Dopoki nie dojde do konca stosu to w kazdej petli do zmiennej
 // tymczasowej tmp przypisuje wartosc kolejnego miejsca w stacku.
-// Uwalniam pamiec w aktualnym miejscu w stacku. Przypisuje cuurent
+// Uwalniam pamiec w aktualnym miejscu w stacku. Przypisuje current
 // wartosc z tmp. I tak do konca stosu.
 
 void stack_free(t_stack **stack)
@@ -67,6 +67,8 @@ void stack_free(t_stack **stack)
 	*stack = NULL;
 }
 
+// wypisuje blad i jesli argc == 2 (czyli kiedy wprowadzilem tylko 1 argument, np. "1 34 -65" lub 42) to uwalniam pamiec w zapisanej przez split tablicy
+
 void error_free(t_stack **a, char *argv[], bool flag_argc_2)
 {
 	stack_free(a); // skoro jest blad to musze uwolnic pamiec dla stosu a
@@ -75,6 +77,8 @@ void error_free(t_stack **a, char *argv[], bool flag_argc_2)
 	write (2, "Error\n", 6);
 	exit(1);
 }
+
+// error_syntax obsluguje bledy jak niedozwolone znaki itd.
 
 int error_syntax(char *str)
 {
@@ -91,6 +95,8 @@ int error_syntax(char *str)
 	}
 	return (0);
 }
+
+// sprawdza czy dana liczba pojawila sie juz w stosie
 
 int error_repetition(t_stack *a, int nbr)
 {
