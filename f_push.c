@@ -12,6 +12,8 @@
 
 #include "push_swap.h"
 
+// przenosi wartosc z wierzchu jednego stosu do drugiego
+
 static void push(t_stack **dest, t_stack **src)
 {
 	t_stack *to_push;

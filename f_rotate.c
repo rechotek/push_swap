@@ -20,7 +20,7 @@
 // 9 (P->8, N->null)
 // wytlumaczenie w poszczegolnych wierszach
 //
-// wynik to ponizszej funkcji:
+// wynik po ponizszej funkcji:
 // 8 (P->null, N->9)
 // 9 (P->8, N->4)
 // 4 (P->9, N->null)

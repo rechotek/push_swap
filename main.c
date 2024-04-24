@@ -40,8 +40,8 @@ bool stack_sorted(t_stack *stack)
 		return (1);
 	while (stack->next)
 	{
-		if (stack->value > stack->next)
-			return (false)
+		if (stack->value > stack->next->value)
+			return (false);
 		stack = stack->next;
 	}
 	return (true);
@@ -71,10 +71,10 @@ int main (int argc, char *argv[])
 	if (!stack_sorted(a))
 	{
 		if (stack_len(a) == 2)
-			sa(&a, false); // to zrozumiec
+			sa(&a);
 		else if (stack_len(a) == 3)
 			sort_three(&a);
-		else
-			push_swap(&a, &b);
+		// else
+		// 	push_swap(&a, &b);
 	}
 }
