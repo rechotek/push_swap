@@ -26,7 +26,7 @@ typedef struct s_stack
 {
 	int		value;
 	int		current_position;
-	int		final_index;
+	int		final_index; // ta zmienna chyba nie jest potrzebna - jest nieuzywana
 	int		push_price;
 	bool	above_median; // bool to zmienna, ktora obluguje tylko warunek true/false
 	bool 	cheapest;
