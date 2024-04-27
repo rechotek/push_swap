@@ -12,3 +12,12 @@
 
 #include "push_swap.h"
 
+void sort_five(t_stack **a, t_stack **b)
+{
+    while (stack_len(*a) > 3)
+    {
+        init_nodes(*a, *b);
+        finish_rotation(a, find_smallest(*a), 'a');
+        pb(b, a);
+    }
+}

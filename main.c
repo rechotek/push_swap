@@ -74,7 +74,10 @@ int main (int argc, char *argv[])
 			sa(&a);
 		else if (stack_len(a) == 3)
 			sort_three(&a);
-		// else
-		// 	push_swap(&a, &b);
+		else if (stack_len(a) == 5)
+			sort_five(&a);
+		else
+			push_swap(&a, &b);
 	}
+	stack_free(&a);
 }

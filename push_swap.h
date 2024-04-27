@@ -28,9 +28,9 @@ typedef struct s_stack
 	int		current_position;
 	int		final_index; // ta zmienna chyba nie jest potrzebna - jest nieuzywana
 	int		push_price;
-	bool	above_median; // bool to zmienna, ktora obluguje tylko warunek true/false
+	bool	above_mediana; // bool to zmienna, ktora obluguje tylko warunek true/false
 	bool 	cheapest;
-	struct s_stack	*target;
+	struct s_stack	*target_node;
 	struct s_stack	*next;
 	struct s_stack	*prev;
 }	t_stack; // dzieki typedef na poczatku, zamiast pisac "struct s_stack" wystarczy ze napisze t_stack
@@ -48,15 +48,27 @@ void stack_free(t_stack **stack);
 
 // Tworzenie stosu
 void stack_init(t_stack **a, char *argv[], bool flag_argc_2);
+void init_nodes(t_stack *a, t_stack *b);
+void set_current_position(t_stack *stack);
+void set_price(t_stack *a, t_stack *b);
+void set_cheapest(t_stack *b);
+
+
+
+
 
 // Linked list
 void append_node(t_stack **stack, int nbr);
 t_stack *find_last_node(t_stack *head);
 int stack_len(t_stack *stack);
 bool stack_sorted(t_stack *stack);
+void finish_rotation(t_stack **stack, t_stack *top_node, char stack_name);
 
 // Algorytmy
  void sort_three(t_stack **a);
+
+ void push_swap(t_stack **a, t_stack **b);
+
 
 
 // Moves
