@@ -52,6 +52,8 @@ void init_nodes(t_stack *a, t_stack *b);
 void set_current_position(t_stack *stack);
 void set_price(t_stack *a, t_stack *b);
 void set_cheapest(t_stack *b);
+t_stack *return_cheapest(t_stack *b);
+t_stack *find_smallest(t_stack *a);
 
 
 
@@ -66,7 +68,7 @@ void finish_rotation(t_stack **stack, t_stack *top_node, char stack_name);
 
 // Algorytmy
  void sort_three(t_stack **a);
-
+void sort_five(t_stack **a, t_stack **b);
  void push_swap(t_stack **a, t_stack **b);
 
 

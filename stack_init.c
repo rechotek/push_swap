@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int ft_atol (char *str)
+static long ft_atol(const char *str) // dlaczego static i const?
 {
 	long	num;
 	int		sign;
@@ -47,22 +47,23 @@ int ft_atol (char *str)
 // sprawdzamy go pod katem bledow i na koncu umieszczamy go w stosie,
 // za pomoca append_node.
 
-
-void stack_init(t_stack **a, char *argv[], bool flag_argc_2)
+void	stack_init(t_stack **a, char *argv[], bool flag_argc_2)
 {
 	long	nbr;
+	int		x;
 
-	while (*argv)
+	x = 0;
+	while (argv[x])
 	{
-		if (error_syntax(*argv)) // jezeli warunek bledu jest true (czyli jest prawdziwy) to zwraca blad; sprawdza czy nie ma bledow jak, np. inne znaki niz cyfry, '+' i '-' lub znak '+' i '-' po ktorych nie ma nic
+		if (error_syntax(argv[x])) // jezeli warunek bledu jest true (czyli jest prawdziwy) to zwraca blad; sprawdza czy nie ma bledow jak, np. inne znaki niz cyfry, '+' i '-' lub znak '+' i '-' po ktorych nie ma nic
 			error_free(a, argv, flag_argc_2); // jesli warunek jest spelniony to wypuszcza blad
-		nbr = ft_atol(*argv); // atol, a nie atoi bo najpierw musze miec liczbe w formie liczbowej, aby sprawdzic czy jest w zakresie INT
-		if (nbr < INT_MIN || nbr > INT_MAX)
+		nbr = ft_atol(argv[x]);
+		if (nbr > INT_MAX || nbr < INT_MIN)
 			error_free(a, argv, flag_argc_2);
 		if (error_repetition(*a, (int)nbr))
 			error_free(a, argv, flag_argc_2);
 		append_node(a, (int)nbr); // (int)nbr, poniewaz przekastowuje wartosc long na int
-		argv++;
+		++x;
 	}
 	if (flag_argc_2)
 		matrix_free(argv);
@@ -73,7 +74,7 @@ void stack_init(t_stack **a, char *argv[], bool flag_argc_2)
 // 	t_stack *a;
 // 	a = NULL;
 
-// 	char *v[5] = {v[0] = "\0", v[1] = "42", v[2] = "1337", v[3] = "-21", v[4] = NULL};
+// 	char *v[5] = {v[0] = "\0", v[1] = "42", v[2] = "-2147483649", v[3] = "-21", v[4] = NULL};
 // 	stack_init(&a, v+1, false);
 // 	while (a)
 // 	{

@@ -1,107 +1,81 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/20 11:53:25 by mrechuli          #+#    #+#             */
+/*   Updated: 2024/04/23 21:00:37 by mrechuli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-// wykonuje rotate dla obu stosow jednoczesnie
-// wykonuje ja dopoki, liczba a lub liczba b nie bedzie na szczycie
+// obliczam dlugosc stosu. iteruje dopoki stos istnieje
+// przy kazdej petli zmieniam pozycje stack na stack->next
 
-static void rotate_both(t_stack **a, t_stack **b, t_stack *cheapest_node)
+int stack_len(t_stack *stack)
 {
-	while (*a != cheapest_node->target_node && *b != cheapest_node) // dopoki liczba na szczycie a jest rozna od target_node "najtanszej" iiiii liczba na szczycie b jest rozna od "najtanszej"
-		rr(a, b);
-	set_current_position(*a); // uaktualniam pozycje wzgledem mediany dla obu stosow, aby wiedziec jaki ruch wykonac (r czy rr) dla tej liczby ktora jeszcze nie doszla na szczyt swojego stosu
-	set_current_position(*b);
-}
+	int x;
 
-// wykonuje reverse rotate dla obu stosow jednoczesnie
-// wykonuje ja dopoki, liczba a lub liczba b nie bedzie na szczycie
-
-static void reverse_rotate_both(t_stack **a, t_stack **b, t_stack *cheapest_node)
-{
-	while (*a != cheapest_node->target_node && *b != cheapest_node) // dopoki liczba na szczycie a jest rozna od target_node "najtanszej" iiiii liczba na szczycie b jest rozna od "najtanszej"
-		rrr(a, b);
-	set_current_position(*a); // uaktualniam pozycje wzgledem mediany dla obu stosow, aby wiedziec jaki ruch wykonac (r czy rr) dla tej liczby ktora jeszcze nie doszla na szczyt swojego stosu
-	set_current_position(*b);
-}
-
-// finish_rotation jest po to, aby doprowadzic na szczyt ta liczbe, ktora
-// po wspolnych dla obu stosow rotacjach, nie znalazla sie jeszcze na szczycie stosu
-
-void finish_rotation(t_stack **stack, t_stack *top_node, char stack_name) // stos a lub b; cheapest_node lub cheapest_node->target_node; 'a' lub 'b' czyli nazwa stosu
-{
-	while (*stack != top_node) // dopoki na szczycie stosu (niewazne ktorego, tak to jest napisane aby pasowalo do obu) nie jest top_node czyli cheapest
+	if (stack == NULL)
+		return (0);
+	x = 0;
+	while (stack)
 	{
-		if (stack_name == 'a')
-		{
-			if (top_node->above_mediana) // cheapest jest powyzej mediany
-				ra(stack);
-			else
-				rra(stack);
-		}
-		else if (stack_name == 'b') // cheapest jest ponizej mediany
-		{
-			if (top_node->above_mediana)
-				rb(stack);
-			else
-				rrb(stack);
-		}
-	}
-}
-
-static void move_nodes(t_stack **a, t_stack **b)
-{
-	t_stack *cheapest_node;
-
-	cheapest_node = return_cheapest(*b); // zwraca wskaznik na cheapest
-	if ((cheapest_node->above_mediana) && (cheapest_node->target_node->above_mediana)) // jesli zarowno liczba b i jej target_node sa ponad mediana to wykonuje rotate
-		rotate_both(a, b, cheapest_node);
-	else if (!(cheapest_node->above_mediana) && !(cheapest_node->target_node->above_mediana)) // jesli zarowno liczba b i jej target_node sa ponizej mediana to wykonuje reverse rotate
-		reverse_rotate_both(a, b, cheapest_node);
-	finish_rotation(b, cheapest_node, 'b');
-	finish_rotation(a, cheapest_node->target_node, 'a');
-	pa(a, b);
-}
-
-// find_smallest wyszukuje najmniejsza liczbe w stosie a i zwraca pointer do tej liczby
-
-t_stack *find_smallest(t_stack *a)
-{
-	long	smallest;
-	t_stack	*smallest_node;
-
-	if (a == NULL)
-		return (NULL);
-	smallest = LONG_MAX;
-	while (a)
-	{
-		if (a->value < smallest)
-		{
-			smallest = a->value;
-			smallest_node = stack;
-		}
+		x++;
 		stack = stack->next;
 	}
-	return (smallest_node);
+	return (x);
 }
 
-void push_swap(t_stack **a, t_stack **b)
-{
-	t_stack *smallest;
-	int		len_a;
+// sprawdzam czy stos jest posortowany
+// biore wartosc node i sprawdzam czy jest wieksza od nastepnego node
+// jesli jest wieksza to blad, czyli stos nieposortowany
 
-	len_a = stack_len(*a);
-	while (len_a-- > 3) // dopoki w stosie a sa wiecej niz 3 liczby...
-		pb(b, a); // ... to przerzucam je (push) ze stosu a do stosu b
-	sort_three(a); // dla 3 pozostalych w stosie a liczb wykonaj sort_three
-	while (*b) // dopoki sa liczby w stosie b... (wykonuje init_nodes dla aktualnych danych w stosie, po czym na podstawie tego wykonuje jeden ruch wypchniecia liczby ze stosu b do stosu a (na to wypchniecie sklada sie oczywiscie duzo innych ruchow); w następnej petli ponownie wykonuje init_nodes bo ustawienie w stosach juz sie zmienilo)
+bool stack_sorted(t_stack *stack)
+{
+	if (stack == NULL)
+		return (1);
+	while (stack->next)
 	{
-		init_nodes(*a, *b); // ...to inicjuje dane dla node: aktualna pozycje w stosie (czy jest nad czy pod mediana), target_node (polaczenie liczby b z liczba a), koszt przesuniecia poszczegolnych licz b i ich target_node, okreslenie ktory koszt jest najtanszy
-		move_nodes(a, b); // wykonanie ruchow niezbednych do wypchniecia liczby ze stosu b do a
+		if (stack->value > stack->next->value)
+			return (false);
+		stack = stack->next;
 	}
-	set_current_position(*a); //uaktualniam pozycje wzgledem mediany tylko dla stosu a, poniewaz po wczesniejszych operacjach wszystkie liczby sa w stosie a i teraz wystarczy najmniejsza umiescic na szczycie
-	smallest = find_smallest(*a);
-	if (smallest->above_mediana)
-		while (*a != smallest)
-			ra(a);
-	else
-		while (*a != smallest)
-			rra(a);
+	return (true);
+}
+
+// else if (argc == 2)
+// oprocz nazwy mamy tylko jeden argument, ale ten argument moze miec taka
+// forme "3 5 42 -1337" i wtedy potrzebuje uzyc splita, aby wyciagnac z niego
+// poszczegolny liczby (za pomoca splita zapisuje je w takiej
+// formie, aby odzwierciedlic argv, poniewaz w dalszym kroku bede tworzyl stos
+// zarowno dla danych wprowadzonych tak: "3 5 42 -1337" jak i tak: 3 5 42 -1337;
+// ten drugi przyklad ma z natury forme argv, wiec chcemy uzyskac taka sama forme
+// dla liczb uzyskanych za pomoca ft_split)
+
+int main (int argc, char *argv[])
+{
+	t_stack	*a;
+	t_stack	*b;
+
+	a = NULL; // przypisuje NULL do pointerow, any uniknac "segmentation fault" - taka dobra praktyka
+	b = NULL;
+	if (argc == 1 || (argc == 2 && !argv[1][0])) //argc == 1 mowi nam ze mamy tylko nazwe programu; drugi warunek mowi o tym, ze jest jest drugi argument, ale pusty (w obu tych przypadkach zwracamy 1, bo to jest blad)
+		return (1);
+	else if (argc == 2) // oprocz nazwy mamy tylko jeden argument, ale ten argument moze miec taka forme "3 5 42 -1337"
+		argv = ft_split(argv[1], ' '); // tutaj nazywamy tabele liczb, ktora utworzymy za pomoca splita argv, poniewaz linie nizej inicjuje stos i uzywam argv + 1, poniewaz chce od razu dostac sie do liczby - bedzie to dzialo zarowno dla liczb utworzonych w tabeli splitem, jak i dla danych wprowadzonych do programu w wielu stringach
+	stack_init(&a, argv + 1, argc == 2); // argv+1, aby zaczac od miejsca gdzie juz powinna znajdowac sie pierwsza liczba
+	if (!stack_sorted(a))
+	{
+		if (stack_len(a) == 2)
+			sa(&a);
+		else if (stack_len(a) == 3)
+			sort_three(&a);
+		else
+			push_swap(&a, &b);
+	}
+	stack_free(&a);
 }

@@ -6,14 +6,14 @@
 #    By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 19:40:05 by mrechuli          #+#    #+#              #
-#    Updated: 2024/04/24 20:02:16 by mrechuli         ###   ########.fr        #
+#    Updated: 2024/04/28 15:38:13 by mrechuli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
 ARCHIVE = push_swap.a
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -O2 
+CFLAGS = -Wall -Werror -Wextra -g -O2
 MAKE_LIB = ar -rcs
 
 SRCS = $(wildcard *.c)
@@ -29,9 +29,9 @@ $(ARCHIVE) : $(OBJS)
 
 %.o : %.c 
 	$(CC) $(CFLAGS) -c $< -o $@ 
-
+	
 bonus : 
-	cd ../checker && make
+	cd ../checker && make	
 	
 clean :
 	rm -f $(OBJS) $(ARCHIVE)
@@ -42,4 +42,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclea re
+.PHONY : all clean fclean re
