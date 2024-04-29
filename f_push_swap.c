@@ -1,42 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   f_push_swap.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrechuli <mrechuli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/29 18:59:36 by mrechuli          #+#    #+#             */
+/*   Updated: 2024/04/29 19:07:09 by mrechuli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-// wykonuje rotate dla obu stosow jednoczesnie
-// wykonuje ja dopoki, liczba a lub liczba b nie bedzie na szczycie
-
-static void rotate_both(t_stack **a, t_stack **b, t_stack *cheapest_node)
+static void	rotate_both(t_stack **a, t_stack **b, t_stack *cheapest_node)
 {
-	while (*a != cheapest_node->target_node && *b != cheapest_node) // dopoki liczba na szczycie a jest rozna od target_node "najtanszej" iiiii liczba na szczycie b jest rozna od "najtanszej"
+	while (*a != cheapest_node->target_node && *b != cheapest_node)
 		rr(a, b);
-	set_current_position(*a); // uaktualniam pozycje wzgledem mediany dla obu stosow, aby wiedziec jaki ruch wykonac (r czy rr) dla tej liczby ktora jeszcze nie doszla na szczyt swojego stosu
+	set_current_position(*a);
 	set_current_position(*b);
 }
 
-// wykonuje reverse rotate dla obu stosow jednoczesnie
-// wykonuje ja dopoki, liczba a lub liczba b nie bedzie na szczycie
-
-static void reverse_rotate_both(t_stack **a, t_stack **b, t_stack *cheapest_node)
+static void	reverse_rotate_both(t_stack **a, t_stack **b,
+t_stack *cheapest_node)
 {
-	while (*a != cheapest_node->target_node && *b != cheapest_node) // dopoki liczba na szczycie a jest rozna od target_node "najtanszej" iiiii liczba na szczycie b jest rozna od "najtanszej"
+	while (*a != cheapest_node->target_node && *b != cheapest_node)
 		rrr(a, b);
-	set_current_position(*a); // uaktualniam pozycje wzgledem mediany dla obu stosow, aby wiedziec jaki ruch wykonac (r czy rr) dla tej liczby ktora jeszcze nie doszla na szczyt swojego stosu
+	set_current_position(*a);
 	set_current_position(*b);
 }
 
-// finish_rotation jest po to, aby doprowadzic na szczyt ta liczbe, ktora
-// po wspolnych dla obu stosow rotacjach, nie znalazla sie jeszcze na szczycie stosu
-
-void finish_rotation(t_stack **stack, t_stack *top_node, char stack_name) // stos a lub b; cheapest_node lub cheapest_node->target_node; 'a' lub 'b' czyli nazwa stosu
+void	finish_rotation(t_stack **stack, t_stack *top_node, char stack_name)
 {
-	while (*stack != top_node) // dopoki na szczycie stosu (niewazne ktorego, tak to jest napisane aby pasowalo do obu) nie jest top_node czyli cheapest
+	while (*stack != top_node)
 	{
 		if (stack_name == 'a')
 		{
-			if (top_node->above_mediana) // cheapest jest powyzej mediany
+			if (top_node->above_mediana)
 				ra(stack);
 			else
 				rra(stack);
 		}
-		else if (stack_name == 'b') // cheapest jest ponizej mediany
+		else if (stack_name == 'b')
 		{
 			if (top_node->above_mediana)
 				rb(stack);
@@ -46,45 +50,25 @@ void finish_rotation(t_stack **stack, t_stack *top_node, char stack_name) // sto
 	}
 }
 
-static void move_nodes(t_stack **a, t_stack **b)
+static void	move_nodes(t_stack **a, t_stack **b)
 {
-	t_stack *cheapest_node;
+	t_stack	*cheapest_node;
 
-	cheapest_node = return_cheapest(*b); // zwraca wskaznik na cheapest
-	if ((cheapest_node->above_mediana) && (cheapest_node->target_node->above_mediana)) // jesli zarowno liczba b i jej target_node sa ponad mediana to wykonuje rotate
+	cheapest_node = return_cheapest(*b);
+	if ((cheapest_node->above_mediana)
+		&& (cheapest_node->target_node->above_mediana))
 		rotate_both(a, b, cheapest_node);
-	else if (!(cheapest_node->above_mediana) && !(cheapest_node->target_node->above_mediana)) // jesli zarowno liczba b i jej target_node sa ponizej mediana to wykonuje reverse rotate
+	else if (!(cheapest_node->above_mediana)
+		&& !(cheapest_node->target_node->above_mediana))
 		reverse_rotate_both(a, b, cheapest_node);
 	finish_rotation(b, cheapest_node, 'b');
 	finish_rotation(a, cheapest_node->target_node, 'a');
 	pa(a, b);
 }
 
-// find_smallest wyszukuje najmniejsza liczbe w stosie a i zwraca pointer do tej liczby
-
-t_stack *find_smallest(t_stack *a)
+void	push_swap(t_stack **a, t_stack **b)
 {
-	long	smallest;
-	t_stack	*smallest_node;
-
-	if (a == NULL)
-		return (NULL);
-	smallest = LONG_MAX;
-	while (a)
-	{
-		if (a->value < smallest)
-		{
-			smallest = a->value;
-			smallest_node = a;
-		}
-		a = a->next;
-	}
-	return (smallest_node);
-}
-
-void push_swap(t_stack **a, t_stack **b)
-{
-	t_stack *smallest;
+	t_stack	*smallest;
 	int		len_a;
 
 	len_a = stack_len(*a);
@@ -92,16 +76,16 @@ void push_swap(t_stack **a, t_stack **b)
 		sort_five(a, b);
 	else
 	{
-		while (len_a-- > 3) // dopoki w stosie a sa wiecej niz 3 liczby...
-			pb(b, a); // ... to przerzucam je (push) ze stosu a do stosu b
+		while (len_a-- > 3)
+			pb(b, a);
 	}
-	sort_three(a); // dla 3 pozostalych w stosie a liczb wykonaj sort_three
-	while (*b) // dopoki sa liczby w stosie b... (wykonuje init_nodes dla aktualnych danych w stosie, po czym na podstawie tego wykonuje jeden ruch wypchniecia liczby ze stosu b do stosu a (na to wypchniecie sklada sie oczywiscie duzo innych ruchow); w następnej petli ponownie wykonuje init_nodes bo ustawienie w stosach juz sie zmienilo)
+	sort_three(a);
+	while (*b)
 	{
-		init_nodes(*a, *b); // ...to inicjuje dane dla node: aktualna pozycje w stosie (czy jest nad czy pod mediana), target_node (polaczenie liczby b z liczba a), koszt przesuniecia poszczegolnych licz b i ich target_node, okreslenie ktory koszt jest najtanszy
-		move_nodes(a, b); // wykonanie ruchow niezbednych do wypchniecia liczby ze stosu b do a
+		init_nodes(*a, *b);
+		move_nodes(a, b);
 	}
-	set_current_position(*a); //uaktualniam pozycje wzgledem mediany tylko dla stosu a, poniewaz po wczesniejszych operacjach wszystkie liczby sa w stosie a i teraz wystarczy najmniejsza umiescic na szczycie
+	set_current_position(*a);
 	smallest = find_smallest(*a);
 	if (smallest->above_mediana)
 		while (*a != smallest)

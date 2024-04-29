@@ -12,9 +12,7 @@
 
 #include "push_swap.h"
 
-// szukam tu ostatniej liczby, ktora dodalem do stosu
-
-t_stack *find_last_node(t_stack *head)
+t_stack	*find_last_node(t_stack *head)
 {
 	if (head == NULL)
 		return (NULL);
@@ -23,24 +21,19 @@ t_stack *find_last_node(t_stack *head)
 	return (head);
 }
 
-// append_node dodaje liczbe do stosu, czyli tworzy nowy node i nadaje mu wartosc
-// dla kazdego nowego node, next = NULL, poniewaz po nim nie ma jeszcze nic
-// a previous = last_node, czyli ten, ktory ostatnio probowalem "wgrac"
-// jesli to jest pierwszy node to przechowuje wskaznik na stos a
-
-void append_node(t_stack **stack, int nbr)
+void	append_node(t_stack **stack, int nbr)
 {
-	t_stack *node;
-	t_stack *last_node;
+	t_stack	*node;
+	t_stack	*last_node;
 
 	if (stack == NULL)
-		return ; // jak jest void to return musi byc pusty, poniewaz void sam z siebie nie zwraca nic
-	node = malloc(sizeof(t_stack)); // alokujac pamiec tworze node
+		return ;
+	node = malloc(sizeof(t_stack));
 	if (node == NULL)
 		return ;
 	node->next = NULL;
-	node->value = nbr; // przypisuje liczbe (nbr) do node
-	if (*stack == NULL) // sprawdzam czy jest pusty (to dlatego w main inicjalizuje t_stack *a = NULL)
+	node->value = nbr;
+	if (*stack == NULL)
 	{
 		*stack = node;
 		node->prev = NULL;
@@ -51,4 +44,37 @@ void append_node(t_stack **stack, int nbr)
 		last_node->next = node;
 		node->prev = last_node;
 	}
+}
+
+t_stack	*find_smallest(t_stack *a)
+{
+	long	smallest;
+	t_stack	*smallest_node;
+
+	if (a == NULL)
+		return (NULL);
+	smallest = LONG_MAX;
+	while (a)
+	{
+		if (a->value < smallest)
+		{
+			smallest = a->value;
+			smallest_node = a;
+		}
+		a = a->next;
+	}
+	return (smallest_node);
+}
+
+t_stack	*return_cheapest(t_stack *b)
+{
+	if (b == NULL)
+		return (NULL);
+	while (b)
+	{
+		if (b->cheapest)
+			return (b);
+		b = b->next;
+	}
+	return (NULL);
 }
